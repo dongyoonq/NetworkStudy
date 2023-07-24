@@ -3,7 +3,7 @@ using Photon.Realtime;
 using TMPro;
 using UnityEngine;
 
-public class InConnectPanel : MonoBehaviour
+public class MenuPanel : MonoBehaviour
 {
     [SerializeField]
     private GameObject menuPanel;
@@ -37,7 +37,7 @@ public class InConnectPanel : MonoBehaviour
     {
         string roomName = roomNameInputField.text;
         if (string.IsNullOrEmpty(roomName))
-            roomName = string.Format("Room {0}", Random.Range(0, 1000));
+            roomName = $"Room {Random.Range(0, 1000)}";
 
         int maxPlayer = (string.IsNullOrEmpty(maxPlayerInputField.text)) ? 8 : int.Parse(maxPlayerInputField.text);
         maxPlayer = Mathf.Clamp(maxPlayer, 1, 8);

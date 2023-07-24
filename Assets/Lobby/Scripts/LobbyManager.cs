@@ -3,23 +3,29 @@ using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using PhotonHashtable = ExitGames.Client.Photon.Hashtable;
 
 public class LobbyManager : MonoBehaviourPunCallbacks
 {
-    public enum Panel { Login, InConnect, Lobby, Room }
+    public enum Panel { Login, Menu, Lobby, Room }
 
     [SerializeField]
     private LoginPanel loginPanel;
     [SerializeField]
-    private InConnectPanel inConnectPanel;
+    private MenuPanel menuPanel;
     [SerializeField]
     private RoomPanel roomPanel;
     [SerializeField]
     private LobbyPanel lobbyPanel;
 
+    private void Start()
+    {
+        SetActivePanel(Panel.Login);
+    }
+
     public override void OnConnectedToMaster()
     {
-        SetActivePanel(Panel.InConnect);
+        SetActivePanel(Panel.Menu);
     }
 
     public override void OnDisconnected(DisconnectCause cause)
@@ -29,7 +35,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     public override void OnCreateRoomFailed(short returnCode, string message)
     {
-        SetActivePanel(Panel.InConnect);
+        SetActivePanel(Panel.Menu);
         StatePanel.Instance.AddMessage(string.Format("Create room failed with error({0}) : {1}", returnCode, message));
     }
 
@@ -37,12 +43,15 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     {
         SetActivePanel(Panel.Room);
 
-        // 방 들어갔을 때 기능 구현
+        PhotonNetwork.LocalPlayer.SetReady(false);
+
+        PhotonNetwork.AutomaticallySyncScene = true;
+        roomPanel.UpdatePlayerList();
     }
 
     public override void OnJoinRoomFailed(short returnCode, string message)
     {
-        SetActivePanel(Panel.InConnect);
+        SetActivePanel(Panel.Menu);
         StatePanel.Instance.AddMessage(string.Format("Join room failed with error({0}) : {1}", returnCode, message));
     }
 
@@ -57,22 +66,33 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     public override void OnLeftRoom()
     {
-        SetActivePanel(Panel.InConnect);
+        PhotonNetwork.AutomaticallySyncScene = false;
+        SetActivePanel(Panel.Menu);
     }
 
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
     {
         lobbyPanel.UpdateRoomList(roomList);
-    }
+    } 
 
     public override void OnPlayerEnteredRoom(Player newPlayer)
     {
-        roomPanel.UpdateRoomState();
+        roomPanel.UpdatePlayerList();
     }
 
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {
-        roomPanel.UpdateRoomState();
+        roomPanel.UpdatePlayerList();
+    }
+
+    public override void OnMasterClientSwitched(Player newMasterClient)
+    {
+        roomPanel.UpdatePlayerList();
+    }
+
+    public override void OnPlayerPropertiesUpdate(Player targetPlayer, PhotonHashtable changedProps)
+    {
+        roomPanel.UpdatePlayerList();
     }
 
     public override void OnJoinedLobby()
@@ -82,14 +102,14 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     public override void OnLeftLobby()
     {
-        SetActivePanel(Panel.InConnect);
+        SetActivePanel(Panel.Menu);
     }
 
     private void SetActivePanel(Panel panel)
     {
-        loginPanel.gameObject.SetActive(panel == Panel.Login);
-        inConnectPanel.gameObject.SetActive(panel == Panel.InConnect);
-        roomPanel.gameObject.SetActive(panel == Panel.Room);
-        lobbyPanel.gameObject.SetActive(panel == Panel.Lobby);
+        loginPanel.gameObject?.SetActive(panel == Panel.Login);
+        menuPanel.gameObject?.SetActive(panel == Panel.Menu);
+        roomPanel.gameObject?.SetActive(panel == Panel.Room);
+        lobbyPanel.gameObject?.SetActive(panel == Panel.Lobby);
     }
 }

@@ -11,27 +11,42 @@ public class LobbyPanel : MonoBehaviour
     [SerializeField]
     private RectTransform roomContent;
 
-    private List<RoomEntry> roomEntries;
+    private Dictionary<string, RoomInfo> roomDictionary;
 
     private void Awake()
     {
-        roomEntries = new List<RoomEntry>();
+        roomDictionary = new Dictionary<string, RoomInfo>();
     }
 
     public void UpdateRoomList(List<RoomInfo> roomList)
     {
-        foreach (RoomEntry room in roomEntries)
+        for (int i = 0; i < roomContent.childCount; i++)
         {
-            Destroy(room.gameObject);
+            Destroy(roomContent.GetChild(i).gameObject);
         }
-
-        roomEntries.Clear();
 
         foreach (RoomInfo room in roomList)
         {
+            // 방이 사라질 예정이면 or 방이 비공개가 되었으면 or 방이 닫혔으면
+            if (room.RemovedFromList || !room.IsVisible || !room.IsOpen)
+            {
+                if (roomDictionary.ContainsKey(room.Name))
+                    roomDictionary.Remove(room.Name);
+
+                continue;
+            }
+
+            // 방이 자료구조에 있었으면 (그냥 무조건 이름이 있었던 방이면 최신으로)
+            if (roomDictionary.ContainsKey(room.Name))
+                roomDictionary[room.Name] = room;
+            else
+                roomDictionary.Add(room.Name, room);
+        }
+
+        foreach (RoomInfo room in roomDictionary.Values)
+        {
             RoomEntry entry = Instantiate(roomEntryPrefab, roomContent);
-            entry.Initialized(room.Name, room.PlayerCount, (byte)room.MaxPlayers);
-            roomEntries.Add(entry);
+            entry.Initialized(room);
         }
     }
 

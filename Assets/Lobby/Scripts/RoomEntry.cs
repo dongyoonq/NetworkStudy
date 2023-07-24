@@ -1,4 +1,5 @@
 using Photon.Pun;
+using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -14,11 +15,14 @@ public class RoomEntry : MonoBehaviour
     [SerializeField]
     private Button joinRoomButton;
 
-    public void Initialized(string name, int currPlayers, byte maxPlayers)
+    private RoomInfo info;
+
+    public void Initialized(RoomInfo roomInfo)
     {
-        roomName.text = name;
-        currentPlayer.text = string.Format("{0}/ {1}", currPlayers, maxPlayers);
-        joinRoomButton.interactable = currPlayers < maxPlayers;
+        info = roomInfo;
+        roomName.text = info.Name;
+        currentPlayer.text = string.Format("{0} / {1}", info.PlayerCount, info.MaxPlayers);
+        joinRoomButton.interactable = info.PlayerCount < info.MaxPlayers;
     }
 
     public void OnJoinButtonClicked()

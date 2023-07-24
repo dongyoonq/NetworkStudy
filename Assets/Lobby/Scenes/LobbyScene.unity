@@ -151,6 +151,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e951f244c6bf4944bf3b235d0d9ed1e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  roomEntryPrefab: {fileID: -4761570568038206928, guid: f5482b89311599546b280066e9e5304e, type: 3}
+  roomContent: {fileID: 925974054}
 --- !u!1 &748751271
 GameObject:
   m_ObjectHideFlags: 0
@@ -196,7 +198,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   loginPanel: {fileID: 1975268988}
-  inConnectPanel: {fileID: 1283974770}
+  menuPanel: {fileID: 1283974770}
   roomPanel: {fileID: 1168918408}
   lobbyPanel: {fileID: 360013280}
 --- !u!1 &817162906
@@ -293,6 +295,11 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!224 &925974054 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 1770108439, guid: 0358b25cd8f0d6a4dbe70a857b5e519f, type: 3}
+  m_PrefabInstance: {fileID: 8309145697008738053}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1044366256 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8371969074064409252, guid: 73402b6957309a24387d8cc9e052a324, type: 3}
@@ -314,6 +321,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 7238240564214595864, guid: d5b322bd95529ff4ba08e6b5a12befef, type: 3}
   m_PrefabInstance: {fileID: 7238240563188573911}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1167160572 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5916088861808141049, guid: aa9d17700908b5447a6fa3a3caddfd0b, type: 3}
+  m_PrefabInstance: {fileID: 5891924587871617275}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1168918403 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1021878182352154358, guid: aa9d17700908b5447a6fa3a3caddfd0b, type: 3}
@@ -331,6 +349,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d41b9e2b62466aa40a8fcce04f49d622, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerContent: {fileID: 2082855835}
+  playerEntryPrefab: {fileID: -5447728906195685112, guid: e6e87caa82c916447b533b2eb2185a63, type: 3}
+  startButton: {fileID: 1167160572}
 --- !u!1 &1283974765 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 857846161396734116, guid: 73402b6957309a24387d8cc9e052a324, type: 3}
@@ -601,6 +622,11 @@ Transform:
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8972136946816387191, guid: 73402b6957309a24387d8cc9e052a324, type: 3}
   m_PrefabInstance: {fileID: 2099693458}
+  m_PrefabAsset: {fileID: 0}
+--- !u!224 &2082855835 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 1204404543, guid: aa9d17700908b5447a6fa3a3caddfd0b, type: 3}
+  m_PrefabInstance: {fileID: 5891924587871617275}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2099693458
 PrefabInstance:
@@ -1028,7 +1054,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8367165447234089975, guid: 6f006de3d8b6e4f4aa052f3082f03d3f, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 196434751, guid: 6f006de3d8b6e4f4aa052f3082f03d3f, type: 3}
@@ -1075,6 +1101,38 @@ PrefabInstance:
     - target: {fileID: 3360835016390899267, guid: aa9d17700908b5447a6fa3a3caddfd0b, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916088861808141049, guid: aa9d17700908b5447a6fa3a3caddfd0b, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916088861808141049, guid: aa9d17700908b5447a6fa3a3caddfd0b, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916088861808141049, guid: aa9d17700908b5447a6fa3a3caddfd0b, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1168918408}
+    - target: {fileID: 5916088861808141049, guid: aa9d17700908b5447a6fa3a3caddfd0b, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916088861808141049, guid: aa9d17700908b5447a6fa3a3caddfd0b, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnStartRoomButtonClicked
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916088861808141049, guid: aa9d17700908b5447a6fa3a3caddfd0b, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: RoomPanel, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916088861808141049, guid: aa9d17700908b5447a6fa3a3caddfd0b, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 6567507813749764586, guid: aa9d17700908b5447a6fa3a3caddfd0b, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8996038270199467613, guid: aa9d17700908b5447a6fa3a3caddfd0b, type: 3}
       propertyPath: m_Pivot.x
@@ -1277,9 +1335,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: StatePanel
       objectReference: {fileID: 0}
+    - target: {fileID: 7238240563871284604, guid: d5b322bd95529ff4ba08e6b5a12befef, type: 3}
+      propertyPath: m_ScrollSensitivity
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 7238240564214595864, guid: d5b322bd95529ff4ba08e6b5a12befef, type: 3}
       propertyPath: m_SizeDelta.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7238240564214595864, guid: d5b322bd95529ff4ba08e6b5a12befef, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0.000030517578
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d5b322bd95529ff4ba08e6b5a12befef, type: 3}
