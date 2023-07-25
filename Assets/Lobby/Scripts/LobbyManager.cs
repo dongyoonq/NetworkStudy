@@ -20,6 +20,15 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     private void Start()
     {
+        if (PhotonNetwork.IsConnected)
+            OnConnectedToMaster();
+        else if (PhotonNetwork.InRoom)
+            OnJoinedRoom();
+        else if (PhotonNetwork.InLobby)
+            OnJoinedLobby();
+        else
+            OnDisconnected(DisconnectCause.None);
+
         SetActivePanel(Panel.Login);
     }
 
@@ -44,6 +53,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         SetActivePanel(Panel.Room);
 
         PhotonNetwork.LocalPlayer.SetReady(false);
+        PhotonNetwork.LocalPlayer.SetLoad(false);
 
         PhotonNetwork.AutomaticallySyncScene = true;
         roomPanel.UpdatePlayerList();
