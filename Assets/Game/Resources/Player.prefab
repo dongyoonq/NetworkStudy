@@ -134,9 +134,11 @@ MonoBehaviour:
   - {r: 0.31688833, g: 0, b: 1, a: 0}
   - {r: 0.6475892, g: 0, b: 1, a: 0}
   accelPower: 60
-  rotateSpeed: 50
+  rotateSpeed: 70
   maxSpeed: 80
-  bulletPrefab: {fileID: 7679477120048014755, guid: 0f5e22bcd44216f4d97e15ecd078d350, type: 3}
+  fireCoolTime: 0.5
+  bulletPrefab: {fileID: 6252784508626720977, guid: 0f5e22bcd44216f4d97e15ecd078d350, type: 3}
+  count: 0
 --- !u!114 &-7641009833092266347
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -156,6 +158,7 @@ MonoBehaviour:
   OwnershipTransfer: 0
   observableSearch: 2
   ObservedComponents:
+  - {fileID: -7906234747770426714}
   - {fileID: 5435374507512842101}
   - {fileID: -7707648650375376537}
   sceneViewId: 0

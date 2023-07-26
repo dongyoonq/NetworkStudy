@@ -8,7 +8,7 @@ public static class CustomProperty
 {
     private const string READY = "Ready";
     private const string LOAD = "Load";
-    private const string NUMBER = "Number";
+    private const string SCORE = "Score";
 
     private const string LOADTIME = "LoadTime";
 
@@ -58,5 +58,21 @@ public static class CustomProperty
         PhotonHashtable property = room.CustomProperties;
         property[LOADTIME] = loadTime;
         room.SetCustomProperties(property);
+    }
+
+    public static int GetScore(this Player player)
+    {
+        PhotonHashtable property = player.CustomProperties;
+        if (property.ContainsKey(SCORE))
+            return (int)property[SCORE];
+        else
+            return -1;
+    }
+
+    public static void SetScore(this Player player, int score)
+    {
+        PhotonHashtable property = player.CustomProperties;
+        property[SCORE] = score;
+        player.SetCustomProperties(property);
     }
 }

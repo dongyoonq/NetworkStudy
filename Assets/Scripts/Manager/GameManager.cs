@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviourPunCallbacks
 {
     [SerializeField] TMP_Text infoText;
     [SerializeField] float countdownTimer;
+    [SerializeField] float spawnStoneTimer;
 
     private void Start()
     {
@@ -89,6 +90,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         yield return new WaitForSeconds(1f);
         infoText.text = "";
     }
+
     public override void OnJoinedRoom()
     {
         StartCoroutine(DebugGameSetupDelay());   
@@ -117,6 +119,32 @@ public class GameManager : MonoBehaviourPunCallbacks
 
         PhotonNetwork.Instantiate("Player", position, rotation);
 
+        if (PhotonNetwork.IsMasterClient)
+            StartCoroutine(SpawnStoneRoutine());
+    }
+
+    IEnumerator SpawnStoneRoutine()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(spawnStoneTimer);
+
+            Vector2 direction = Random.insideUnitCircle.normalized;
+            Vector3 position = new Vector3(direction.x, 0, direction.y) * 200f;
+
+            Vector3 force = -position.normalized * 30f + new Vector3(Random.Range(-10f, 10f), 0, Random.Range(-10f, 10f));
+            Vector3 torque = Random.insideUnitSphere.normalized * Random.Range(1f, 3f);
+
+            object[] instantiateData = { force, torque };
+
+            PhotonNetwork.InstantiateRoomObject("LargeStone", position, Quaternion.identity, 0, instantiateData);
+        }
+    }
+
+    public override void OnMasterClientSwitched(Player newMasterClient)
+    {
+        if (PhotonNetwork.IsMasterClient)
+            StartCoroutine(SpawnStoneRoutine());
     }
 
     private int PlayerLoadCount()

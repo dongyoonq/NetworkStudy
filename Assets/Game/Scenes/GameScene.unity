@@ -428,6 +428,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   infoText: {fileID: 386339942}
   countdownTimer: 5
+  spawnStoneTimer: 2
 --- !u!4 &909054891
 Transform:
   m_ObjectHideFlags: 0

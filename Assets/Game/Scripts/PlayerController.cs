@@ -1,5 +1,6 @@
 using Photon.Pun;
 using Photon.Pun.UtilityScripts;
+using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,6 +13,7 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
     [SerializeField] float accelPower;
     [SerializeField] float rotateSpeed;
     [SerializeField] float maxSpeed;
+    [SerializeField] float fireCoolTime;
 
     [SerializeField] Bullet bulletPrefab;
 
@@ -20,6 +22,7 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
     private PlayerInput playerInput;
     private Rigidbody rb;
     private Vector2 inputDir;
+    private float lastFireTime = float.MinValue;
 
     private void Awake()
     {
@@ -37,14 +40,14 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
             Camera.main.transform.localPosition = new Vector3(0, 20, 0);    
         }
     }
-
+    
     private void Update()
     {
         Accelate(inputDir.y);
         Rotate(inputDir.x);
         Camera.main.transform.rotation = Quaternion.Euler(90, 0, 0);
 
-        count++;
+        //count++;
     }
 
     private void OnMove(InputValue value)
@@ -54,13 +57,30 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
 
     private void OnFire(InputValue value)
     {
-        photonView.RPC("CreateBullet", RpcTarget.All);
+        photonView.RPC("RequestCreateBullet", RpcTarget.MasterClient, transform.position, transform.rotation);
     }
 
     [PunRPC]
-    private void CreateBullet()
+    private void RequestCreateBullet(Vector3 position, Quaternion rotation, PhotonMessageInfo info)
     {
-        Instantiate(bulletPrefab, transform.position, transform.rotation);
+        // 마스터 클라이언트 입장(서버)에서 판정을 진행
+        if (Time.time < lastFireTime + fireCoolTime)
+            return;
+
+        lastFireTime = Time.time;
+
+        float sentTime = (float)info.SentServerTime;
+        photonView.RPC("ResultCreateBullet", RpcTarget.AllViaServer, position, rotation, sentTime, info.Sender);
+    }
+
+    [PunRPC]
+    private void ResultCreateBullet(Vector3 position, Quaternion rotation, float sentTime, Player player)
+    {
+        float lag = (float)(PhotonNetwork.Time - sentTime);
+
+        Bullet bullet = Instantiate(bulletPrefab, position, rotation);
+        bullet.SetPlayer(player);
+        bullet.ApplyLag(lag);
     }
 
     private void Accelate(float input)
